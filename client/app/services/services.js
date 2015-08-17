@@ -118,12 +118,12 @@ angular.module('battlescript.services', [])
 
 })
 
-////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 // Sockets factory
 // 
 // A set of reusable functions to handle socket connections
 // inside various controllers
-////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 
 .factory('Socket', function() {
 
@@ -133,7 +133,7 @@ angular.module('battlescript.services', [])
   var createSocket = function(route, params) {
     console.log('attempt to create');
     var query = params.join('&');
-    return io.connect('http://localhost:8000/#/' + route, {
+    return io.connect('vast-wildwood-2487.herokuapp.com/#/' + route, {
       query: query,
       'force new connection': true
     });
