@@ -203,7 +203,7 @@ angular.module('battlescript.services', [])
   var getBattle = function(battleHash) {
     return $http({
       method: 'POST',
-      url: '/api/duels/getduel',
+      url: '/api/battles/getbattle',
       data: {battleHash: battleHash}
     }).then(function(res) {
       return res.data;
@@ -214,7 +214,7 @@ angular.module('battlescript.services', [])
   var attemptBattle = function(projectId, solutionId, code) {
     return $http({
       method: 'POST',
-      url: '/api/duels/attemptduel',
+      url: '/api/battles/attemptbattle',
       data: {
         code: code,
         projectId: projectId,
