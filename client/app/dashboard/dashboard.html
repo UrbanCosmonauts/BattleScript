@@ -67,7 +67,7 @@
             </ul>
           </div><!-- /dashboar widget -->
         </div><!-- /grid item -->
-        <div class="grid__item grid__item--50-l">
+        <div class="grid__item grid__item--25-l">
           <div class="dashboar-widget dashboard-online">
             <h2 class="dashboar-widget__title">Online Now</h2>
             <ul class="dashboard-online__list">
@@ -79,6 +79,17 @@
             </ul>
           </div><!-- /dashboar widget -->
         </div><!-- /grid item -->
+        <div class="grid__item grid__item--25-l">
+          <div class="dashboard-stats-entry">
+            <h3 class="dashboard-stats-entry__title">Challenge Your friend</h3>
+            <div class="dashboard-stats-entry__body">
+              <p class="dashboard-stats-entry__stat">
+                <input class="challenge-input" type="text" placeholder="enter a username" ng-model="pickOpponent"/>
+                <button ng-click="requestBattle($event, pickOpponent)">Challenge him!</button>
+              </p>
+            </div>
+          </div>
+        </div>
       </div><!-- /grid -->
 
     </div><!-- dashboard -->
