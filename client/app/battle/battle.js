@@ -71,11 +71,11 @@ angular.module('battlescript.battle', [])
 
   ////////////////////////////////////////////////////////////
   // initialize the battle
-  // 
+  //
   // this, importantly, needs to be set up here after the
   // battle socket itself has been initialized and set up
   // above.
-  // 
+  //
   // unlike the updateUserReadyState function, this works
   // in tandem with the sockets. Hence, it needs to wait for
   // the socket to be initialized in the first place.
@@ -86,6 +86,14 @@ angular.module('battlescript.battle', [])
     $scope.ifBothPlayersReady();
 
     // now listen for events
+    // Checks if all users are on battle page
+    $rootScope.battleSocket.on('listOfUsers', function(users) {
+      if(users.length == 2) {
+        console.log("Ready");
+      } else {
+        console.log("Not Ready");
+      }
+    });
     $rootScope.battleSocket.on('opponentReady', function(opponent) {
       if ($scope.opponentReadyState === false) {
         $scope.opponentReadyState = true;
@@ -127,11 +135,11 @@ angular.module('battlescript.battle', [])
 
   ////////////////////////////////////////////////////////////
   // checks if both players ready
-  // 
+  //
   // this gets called each time a user clicks a "ready state"
   // button.
   ////////////////////////////////////////////////////////////
-  
+
   $scope.ifBothPlayersReady = function() {
     if ($scope.userReadyState && $scope.opponentReadyState || window.localStorage.getItem('battleInitiated-' + $scope.battleRoomId)) {
 
@@ -146,7 +154,7 @@ angular.module('battlescript.battle', [])
         // if user refreshes page, or comes back to battle after leaving accidentally
         window.localStorage.setItem('battleInitiated-' + $scope.battleRoomId, true);
       }
-      
+
       $scope.setUpBattle();
     } else {
       // show the battle waiting area
@@ -155,7 +163,7 @@ angular.module('battlescript.battle', [])
       if (!$scope.$$phase) $scope.$apply();
     }
   };
-  
+
 
 
 
@@ -167,7 +175,7 @@ angular.module('battlescript.battle', [])
   $scope.setUpBattle = function() {
     $scope.spinnerOn = true;
     if (!$scope.$$phase) $scope.$apply();
-    
+
     // set up both editors
     $scope.userEditor = Editor.makeEditor('#editor--user', false);
     $scope.opponentEditor = Editor.makeEditor('#editor--opponent', true);
@@ -206,7 +214,7 @@ angular.module('battlescript.battle', [])
   ////////////////////////////////////////////////////////////
   // get the battle, get ready for showdown!
   ////////////////////////////////////////////////////////////
-  
+
   $scope.getBattle = function() {
     // first, cache some vars
     $scope.battle;
@@ -268,17 +276,17 @@ angular.module('battlescript.battle', [])
 
   $scope.handleBattleFieldEvents = function() {
     $rootScope.battleSocket.on('opponentWon', function(){
-      // Any negative is regarded as a loss. 
+      // Any negative is regarded as a loss.
       Users.statChange($scope.user, -1);
 
       // alert to the user!
       alert('Looks like your opponent got the answer first!');
 
       //redirect back. winner found
-      $location.path('/dashboard'); 
+      $location.path('/dashboard');
     });
   };
-  
+
 
 
 
