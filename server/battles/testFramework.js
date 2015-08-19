@@ -1,5 +1,5 @@
 //taken from https://github.com/Codewars/codewars-runner/tree/master/frameworks/javascript/cw-2.js and modified to suit our purposes
-
+//originally logged all messages to console. This doesn't work for us. Modified to replace all console.logs to add to an 'output' array
 try
 {
     // prevent anyone from peeking at the code we passed in
@@ -10,7 +10,6 @@ try
     }
 
     var util = require('util');
-
     var fnToString = Function.toString;
     Function.prototype.toString = function ()
     {
@@ -31,7 +30,7 @@ try
     var methodCalls = {},
         describing = false,
         correct = 0,
-        incorrect = 0,
+        incorrect = 0,  
         failed = [],
         beforeCallbacks = [],
         afterCallbacks = [];
@@ -51,7 +50,7 @@ try
             {
                 successMsg += ": " + options.successMsg;
             }
-            console.log('<PASSED::>' + Test.format(successMsg));
+            global.output.push('<PASSED::>' + Test.format(successMsg));
             correct++;
         }
         else
@@ -61,21 +60,21 @@ try
             {
                 failMsg = (options.extraCredit !== true) ? _message(options.extraCredit) : failMsg;
                 failMsg = combineMessages(["Test Missed", failMsg], ": ");
-                console.log("<MISSED::>" + Test.format(failMsg));
+                global.output.push("<MISSED::>" + Test.format(failMsg));
                 incorrect++;
             }
             else
             {
-                console.log("<FAILED::>" + Test.format(failMsg));
+                global.output.push("<FAILED::>" + Test.format(failMsg));
                 var error = new Test.Error(failMsg);
-                if (describing)
-                {
+                // if (describing)
+                // {
                     failed.push(error);
-                }
-                else
-                {
-                    throw error;
-                }
+                // }
+                // else
+                // {
+                //     throw error;
+                // }
             }
         }
     }
@@ -180,7 +179,7 @@ try
             {
                 if (describing) throw "cannot call describe within another describe";
                 describing = true;
-                console.log("<DESCRIBE::>" + Test.format(_message(msg)));
+                global.output.push("<DESCRIBE::>" + Test.format(_message(msg)));
                 fn();
             }
             catch (ex)
@@ -190,22 +189,22 @@ try
             finally
             {
                 var ms = new Date() - start;
-                console.log("<COMPLETEDIN::>" + ms);
+                global.output.push("<COMPLETEDIN::>" + ms);
                 describing = false;
                 beforeCallbacks = [];
                 afterCallbacks = [];
 
-                if (failed.length > 0)
-                {
-                    throw failed[0];
-                }
+                // if (failed.length > 0)
+                // {
+                //     throw failed[0];
+                // }
             }
         },
         it: function (msg, fn)
         {
             if (!describing) throw '"it" calls must be invoked within a parent "describe" context';
 
-            console.log("<IT::>" + Test.format(_message(msg)));
+            global.output.push("<IT::>" + Test.format(_message(msg)));
             beforeCallbacks.forEach(function (cb)
             {
                 cb();
@@ -223,7 +222,7 @@ try
             finally
             {
                 var ms = new Date() - start;
-                console.log("<COMPLETEDIN::>" + ms);
+                global.output.push("<COMPLETEDIN::>" + ms);
 
                 afterCallbacks.forEach(function (cb)
                 {
@@ -262,7 +261,7 @@ try
             }
             else if (ex.name != "TestError")
             {
-                console.log("<ERROR::>" + this.format(_message(Test.trace(ex))));
+                global.output.push("<ERROR::>" + this.format(_message(Test.trace(ex))));
             }
         },
         // clean up the stack trace of the exception so that it doesn't give confusing results.
@@ -373,7 +372,7 @@ try
             }
             catch (ex)
             {
-                console.log('<b>Expected error was thrown:</b> ' + ex.toString());
+                global.output.push('<b>Expected error was thrown:</b> ' + ex.toString());
                 passed = true
             }
 
@@ -435,6 +434,11 @@ try
         writable: false,
         value: Test.after
     })
+    Object.defineProperty(global, 'expect', {
+        writable: false,
+        value: Test.expect
+    })
+   
 
 
 }catch(ex)

@@ -102,8 +102,9 @@ module.exports = {
   },
 
   runTests: function(req, res) {
-    require('./testRunner.js')(req.body.code, req.body.testCode);
-    console.log('Ran the Tests');
+    var output = require('./testRunner.js')(req.body.code, req.body.testCode);
+    console.log(output);
+    res.status(201).send(output);
   },
 
   submitChallenge: function(req, res) {
