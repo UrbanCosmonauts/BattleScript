@@ -228,12 +228,13 @@ angular.module('battlescript.services', [])
   var runTests = function(code, testCode) {
     return $http({
       method: 'POST',
-      url: '/api/duels/runtests',
+      url: '/api/battles/runtests',
       data: {
         code: code,
         testCode: testCode || null
       }
     }).then(function(res) {
+      console.log(res.data);
       return res.data;
     });
   };

@@ -192,8 +192,11 @@ angular.module('battlescript.battle', [])
     $scope.spinnerOn = true;
     if (!$scope.$$phase) $scope.$apply();
 
-    // set up both editors
+    // set up user editors
     $scope.userEditor = Editor.makeEditor('#editor--user', false);
+    // set up user test editor
+    $scope.testEditor = Editor.makeEditor('#editor--test', false);
+    // set up opponent editor
     $scope.opponentEditor = Editor.makeEditor('#editor--opponent', true);
     $scope.handleEditorEvents();
 
@@ -348,7 +351,7 @@ angular.module('battlescript.battle', [])
 
     $scope.userButtonTest = 'Testing...';
 
-    Battle.runTests($scope.userEditor.getValue())
+    Battle.runTests($scope.userEditor.getValue(), $scope.testEditor.getValue())
       .then(function(data) {
         $scope.userButtonTest = 'Run Tests';
         $scope.userNotes = data.reason;
