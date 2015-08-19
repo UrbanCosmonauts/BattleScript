@@ -26,18 +26,20 @@ io.on('connection', function(socket) {
   var handler = socket.handshake.query.handler;
   if (handler === 'dashboard') dashboardHandler(socket, io);
   if (handler === 'battle') battleHandler(socket, io);
+  if (handler === 'collab') collabHandler(socket, io);
 });
 
-// set up two handlers for separate sockets
+// set up handlers for separate sockets
 var battleHandler = require('./config/battleHandler.js');
 var dashboardHandler = require('./config/dashboardHandler.js');
+var collabHandler = require('./config/collabHandler.js');
 
 
 // For handling various sockets, goto socket battleHandler in config js
 // io.on('connection', function(socket){
 //   var handler = socket.handshake.query.handler;
 //   if (handler === 'battle') battleHandler(socket, io);
-//   
+//
 // });
 
 // export our app for testing and flexibility, required by index.js
