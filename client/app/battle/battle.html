@@ -75,7 +75,8 @@
         </div><!-- /grid -->
       </div><!-- battle-field -->
 
-      <div class="spinner-container" ng-class="{active: spinnerOn === true}">
+      <div class="spinner-container" ng-class="{active: spinnerOn === true || !numUsers}">
+        <h1>Waiting for Opponent</h1>
         <div class="spinner"></div>
       </div><!-- /spinner -->
 
