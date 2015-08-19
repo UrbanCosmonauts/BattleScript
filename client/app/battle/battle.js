@@ -93,6 +93,10 @@ angular.module('battlescript.battle', [])
       } else {
         console.log("Not Ready");
       }
+      $scope.numUsers = users.length == 2;
+      console.log($scope.numUsers);
+      if (!$scope.$$phase) $scope.$apply();
+
     });
     $rootScope.battleSocket.on('opponentReady', function(opponent) {
       if ($scope.opponentReadyState === false) {

@@ -3,8 +3,7 @@
 <main class="main">
   <div class="container">
     <div class="battle">
-      
-      <div class="battle-waiting" ng-class="{'active': showBattleWaitingArea == true}">
+      <div class="battle-waiting" ng-class="{'active': true}" ng-show="numUsers">
         <h1>Waiting for opponent...</h1>
         <p>When both of you are ready, click the buttons!</p>
         <div class="grid grid--l battle-waiting__buttons">
@@ -18,13 +17,13 @@
       </div>
 
       <div class="battle-field" ng-class="battleFieldClass">
-        
+
         <div class="battle-field__header">
           <p>{{ user }} <span>-vs-</span> {{ opponent }}</p>
         </div><!-- /battlefield header -->
 
         <div class="grid grid--l">
-          
+
           <div class="grid__item grid__item--33-l">
             <div class="battle-prompt">
               <h1 class = "promptName"> {{promptName}}</h1><br>
@@ -79,7 +78,7 @@
       <div class="spinner-container" ng-class="{active: spinnerOn === true}">
         <div class="spinner"></div>
       </div><!-- /spinner -->
-  
+
     </div><!-- /battle -->
   </div><!-- /container -->
 </main><!-- /main -->
