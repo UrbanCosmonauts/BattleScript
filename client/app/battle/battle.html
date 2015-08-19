@@ -3,7 +3,7 @@
 <main class="main">
   <div class="container">
     <div class="battle">
-      <div class="battle-waiting" ng-class="{'active': true}" ng-show="numUsers">
+      <div class="battle-waiting" ng-class="{'active': true}" ng-show="numUsers && !inBattle">
         <h1>Waiting for opponent...</h1>
         <p>When both of you are ready, click the buttons!</p>
         <div class="grid grid--l battle-waiting__buttons">

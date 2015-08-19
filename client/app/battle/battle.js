@@ -112,8 +112,9 @@ angular.module('battlescript.battle', [])
       console.log($scope.opponentReadyState);
       $scope.opponentReadyText = $scope.opponentReadyState ? 'Ready for battle!' : 'Waiting on opponent';
       $scope.ifBothPlayersReady();
-
-
+    });
+    $rootScope.battleSocket.on('opponentReady', function(opponent) {
+      $scope.opponent = opponent;
     });
 
     $rootScope.battleSocket.on('nameReq', function(){
@@ -157,7 +158,7 @@ angular.module('battlescript.battle', [])
 
   $scope.ifBothPlayersReady = function() {
     if ($scope.userReadyState && $scope.opponentReadyState || window.localStorage.getItem('battleInitiated-' + $scope.battleRoomId)) {
-
+      $scope.inBattle = true;
       // If battle has already been initiated, set user and opponent ready state to true
       // so that waiting screen will not show
       if (window.localStorage.getItem('battleInitiated-' + $scope.battleRoomId)){
