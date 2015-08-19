@@ -98,16 +98,22 @@ angular.module('battlescript.battle', [])
       if (!$scope.$$phase) $scope.$apply();
 
     });
-    $rootScope.battleSocket.on('opponentReady', function(opponent) {
-      if ($scope.opponentReadyState === false) {
-        $scope.opponentReadyState = true;
-        $scope.opponentReadyClass = 'active';
-        $scope.opponentReadyText = 'Ready for battle!';
-        $scope.opponent = opponent;
-        $scope.ifBothPlayersReady();
-      } else {
-        $scope.opponent = opponent;
-      }
+    $rootScope.battleSocket.on('readyChange', function(ready) {
+      // if ($scope.opponentReadyState === false) {
+      //   $scope.opponentReadyState = true;
+      //   $scope.opponentReadyClass = 'active';
+      //   $scope.opponentReadyText = 'Ready for battle!';
+      //   $scope.opponent = opponent;
+      //   $scope.ifBothPlayersReady();
+      // } else {
+      //   $scope.opponent = opponent;
+      // }
+      $scope.opponentReadyState = ready;
+      console.log($scope.opponentReadyState);
+      $scope.opponentReadyText = $scope.opponentReadyState ? 'Ready for battle!' : 'Waiting on opponent';
+      $scope.ifBothPlayersReady();
+
+
     });
 
     $rootScope.battleSocket.on('nameReq', function(){
@@ -125,13 +131,18 @@ angular.module('battlescript.battle', [])
   ////////////////////////////////////////////////////////////
 
   $scope.updateUserReadyState = function() {
-    if ($scope.userReadyState === false) {
-      $scope.userReadyState = true;
-      $scope.userReadyClass = 'active';
-      $scope.userReadyText = 'Ready for battle!';
-      $rootScope.battleSocket.emit('userReady', $scope.user);
-      $scope.ifBothPlayersReady();
-    }
+    // if ($scope.userReadyState === false) {
+    //   $scope.userReadyState = true;
+    //   $scope.userReadyClass = 'active';
+    //   $scope.userReadyText = 'Ready for battle!';
+    //   $rootScope.battleSocket.emit('userReady', $scope.user);
+    //   $scope.ifBothPlayersReady();
+    // }
+    $scope.userReadyState  = !$scope.userReadyState;
+    $scope.userReadyText = $scope.userReadyState ? 'Ready for battle!' : 'Waiting on you';
+    $rootScope.battleSocket.emit('readyChange', $scope.userReadyState);
+
+    $scope.ifBothPlayersReady();
   };
 
 

@@ -44,6 +44,8 @@ module.exports = function(socket, io){
       console.log("NEW USER LIST: ", joinedRoom.users);
       // broadcast to ALL users in room, array of all users
       io.sockets.in(joinedRoom.id).emit('listOfUsers', joinedRoom.users);
+      // broadcast to ALL OTHER users, ready state
+      socket.broadcast.to(joinedRoom.id).emit('readyChange', false);
 
       if (joinedRoom.members === 0) {
         roomModel.removeRoom(joinedRoom.id);
@@ -64,6 +66,11 @@ module.exports = function(socket, io){
       socket.broadcast.to(joinedRoom.id).emit('opponentReady', data);
     });
 
+    // broadcast to ALL OTHER users, ready state
+    socket.on('readyChange', function(data) {
+      console.log('readyChange:', data);
+      socket.broadcast.to(joinedRoom.id).emit('readyChange', data);
+    });
 
     socket.on('getOpponent', function(data){
       socket.broadcast.to(joinedRoom.id).emit('nameReq');
