@@ -17,7 +17,10 @@ module.exports = function(socket, io){
     socket.join(joinedRoom.id);
 
     // Emit array of all users to a room when someone joins
-    socket.in(joinedRoom.id).emit('userJoined', joinedRoom.users);
+    socket.in(joinedRoom.id).emit('userJoined', joinedRoom.users); // not used;
+
+    // broadcast to ALL users in room, array of all users
+    io.sockets.in(joinedRoom.id).emit('listOfUsers', joinedRoom.users);
 
     // handle text changes
     socket.on('userTextChange', function(data){
@@ -27,7 +30,7 @@ module.exports = function(socket, io){
     socket.on('winnerFound', function(){
       socket.broadcast.to(joinedRoom.id).emit('opponentWon');
     })
-    
+
     // I catch the disconnected client. What I do is 'remove' the memeber from the room
     // I also delete it if there are no people in the room
     // and save it if ppl remain.
@@ -39,6 +42,10 @@ module.exports = function(socket, io){
       joinedRoom.members--;
       joinedRoom.users.splice(joinedRoom.users.indexOf(data.username), 1); // remove user from user array
       console.log("NEW USER LIST: ", joinedRoom.users);
+      // broadcast to ALL users in room, array of all users
+      io.sockets.in(joinedRoom.id).emit('listOfUsers', joinedRoom.users);
+      // broadcast to ALL OTHER users, ready state
+      socket.broadcast.to(joinedRoom.id).emit('readyChange', false);
 
       if (joinedRoom.members === 0) {
         roomModel.removeRoom(joinedRoom.id);
@@ -59,6 +66,11 @@ module.exports = function(socket, io){
       socket.broadcast.to(joinedRoom.id).emit('opponentReady', data);
     });
 
+    // broadcast to ALL OTHER users, ready state
+    socket.on('readyChange', function(data) {
+      console.log('readyChange:', data);
+      socket.broadcast.to(joinedRoom.id).emit('readyChange', data);
+    });
 
     socket.on('getOpponent', function(data){
       socket.broadcast.to(joinedRoom.id).emit('nameReq');
