@@ -8,6 +8,7 @@ angular.module('battlescript', [
   'battlescript.home',
   'battlescript.dashboard',
   'battlescript.battle',
+  'battlescript.collab',
   'ui.router',
   'ngSanitize'
 ])
@@ -49,6 +50,12 @@ angular.module('battlescript', [
       templateUrl: 'app/battle/battle.html',
       controller: 'BattleController',
       authenticate: true
+    })
+    .state('collabroom', {
+      url: '/collab',
+      templateUrl: 'app/collab/collab.html',
+      controller: 'CollabController as vm',
+      authenticate: true
     });
 
     $urlRouterProvider.otherwise('/');
@@ -82,7 +89,7 @@ angular.module('battlescript', [
 
 ////////////////////////////////////////////////////////////
 // boot up app directives
-// 
+//
 // - headerMain: the main header bar for auth'd users
 // - headerLogout: a directive specifically for logout
 // - headerNoAuthPartial: a directive for rendering a static
@@ -141,7 +148,7 @@ angular.module('battlescript', [
 
   // start it up but leave it empty
   $rootScope.dashboardSocket;
-  
+
   // only create socket first time when auth and hits dash
   $rootScope.$on('$stateChangeStart', function(evt, next, current) {
     if (next && Auth.isAuth() && next.name === 'dashboard' && !$rootScope.dashboardSocket) {
@@ -180,7 +187,7 @@ angular.module('battlescript', [
   $rootScope.battleSocket;
 
   $rootScope.initBattleSocket = function(roomhash, cb) {
-    
+
     // still check here
     if (Auth.isAuth() /* && !$rootScope.battleSocket */) {
       // now time to set up the battle socket
