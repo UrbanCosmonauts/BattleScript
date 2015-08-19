@@ -3,23 +3,33 @@ module.exports = function(socket, io) {
   var username = socket.handshake.query.username;
   var roomhash = socket.handshake.query.roomhash;
   var room = roomModel.createOrGetRoom(roomhash);
-  console.log('roomhash', roomhash);
 
-  if (room === null) {
-    console.error('Collab room is full');
-  } else {
+  var addUserToRoom = function() {
     room.users.push(username);
     socket.join(room.id);
-    io.sockets.in(room.id).emit('listOfUsers', room.users);
-  }
+  };
 
-  socket.on('disconnect', function(data) {
-    console.log(username, ' DISCONECTED FROM COLLAB ROOM: ', room.id, "with", data);
+  var removeUserFromRoom = function() {
+    console.log(username, ' DISCONECTED FROM COLLAB ROOM: ', room.id);
     room.members--;
     room.users.splice(room.users.indexOf(username), 1);
-    io.sockets.in(room.id).emit('listOfUsers', room.users);
     if (room.members === 0) {
       roomModel.removeRoom(room.id);
     }
-  });
+  };
+
+  var initRoom = function() {
+    if (room === null) {
+      console.error('Collab room is full');
+    } else {
+      addUserToRoom();
+      io.sockets.in(room.id).emit('listOfUsers', room.users); // broadcast to ALL users in room
+    }
+
+    socket.on('disconnect', function(data) {
+      removeUserFromRoom();
+      io.sockets.in(room.id).emit('listOfUsers', room.users); // broadcast to ALL OTHER users
+    });
+
+  }();
 };
