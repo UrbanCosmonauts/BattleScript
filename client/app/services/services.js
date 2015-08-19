@@ -225,11 +225,26 @@ angular.module('battlescript.services', [])
     });
   };
 
+  var runTests = function(code, testCode) {
+    return $http({
+      method: 'POST',
+      url: '/api/duels/runtests',
+      data: {
+        code: code,
+        testCode: testCode || null
+      }
+    }).then(function(res) {
+      return res.data;
+    });
+  };
+
   return {
     isValidBattleRoom: isValidBattleRoom,
     getBattle: getBattle,
-    attemptBattle: attemptBattle
-  }
+    attemptBattle: attemptBattle,
+    runTests: runTests
+  };
+
 })
 
 ////////////////////////////////////////////////////////////

@@ -101,6 +101,11 @@ module.exports = {
     });
   },
 
+  runTests: function(req, res) {
+    require('./testRunner.js')(req.body.code, req.body.testCode);
+    console.log('Ran the Tests');
+  },
+
   submitChallenge: function(req, res) {
     // TODO: Needs to be able to submit a challenge and test it
   },
