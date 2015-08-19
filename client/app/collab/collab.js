@@ -1,5 +1,5 @@
 angular.module('battlescript.collab', [])
-.controller('CollabController', function(Auth, Socket, Users, Editor) {
+.controller('CollabController', function($scope, Auth, Socket, Users, Editor) {
   var vm = this; // vm refers to view-model
 
   vm.battleRoomId = 1;
@@ -7,11 +7,17 @@ angular.module('battlescript.collab', [])
   vm.setUpCollab = function() {
     vm.editor = Editor.makeEditor('#editor--user', false);
     if (Auth.isAuth()) {
+
       vm.collabSocket = Socket.createSocket('collab', [
         'username=' + Users.getAuthUser(),
         'handler=collab',
         'roomhash=' + vm.battleRoomId
       ]);
+
+      vm.collabSocket.on('listOfUsers', function(listOfUsers) {
+        vm.listOfUsers = listOfUsers;
+        $scope.$apply();
+      });
     }
   }();
 
