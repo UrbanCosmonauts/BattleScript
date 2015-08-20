@@ -9,6 +9,7 @@ angular.module('battlescript', [
   'battlescript.dashboard',
   'battlescript.battle',
   'battlescript.collab',
+  'battlescript.directives.battlePrompt',
   'ui.router',
   'ngSanitize'
 ])

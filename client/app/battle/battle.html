@@ -23,20 +23,13 @@
         </div><!-- /battlefield header -->
 
         <div class="grid grid--l">
-
           <div class="grid__item grid__item--33-l">
-            <div class="battle-prompt">
-              <h1 class = "promptName"> {{promptName}}</h1><br>
-              <h3 class="battle-prompt__title">Prompt:</h3>
-              <div class="battle-prompt__description" ng-show="!!battleDescription" ng-bind-html="battleDescription"></div>
-            </div><!-- /battle-prompt -->
-            <div class = "exampleFixture">{{ exampleFixture}} </div>
+          <div battle-prompt battle-description="battleDescription"></div>
             <div ng-show=" !userFinishReadingState || !opponentFinishReadingState">
                 <button ng-class="{'active': userFinishReadingState}" class="btn btn--primary btn--medium btn--readstate btn--block" ng-click="updateUserFinishReadingState()">{{ userReadyText }}</button>
                 <button ng-class="{'active': opponentFinishReadingState}" class="btn btn--primary btn--medium btn--readstate btn--block">{{ opponentReadyText }}</button>
             </div>
           </div><!-- grid item -->
-
           <div ng-show="userFinishReadingState && opponentFinishReadingState" class="grid__item grid__item--66-l">
 
             <div class="battle-player battle-player--user">
@@ -45,7 +38,7 @@
                 <div class="editor__field">
                   <textarea name="editor--user" id="editor--user" class="editor__text"></textarea>
                 </div>
-                
+
                 <div class="editor__footer">
                   <button type="submit" class="btn btn--secondary btn--small" ng-click="attemptBattle($event)">
                     {{ userButtonAttempt }}
