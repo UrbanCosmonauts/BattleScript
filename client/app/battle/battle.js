@@ -65,6 +65,9 @@ angular.module('battlescript.battle', [])
   $scope.opponentReadyClass = '';
   $scope.opponentReadyText = 'Waiting on opponent';
 
+  $scope.userFinishReadingState = false;
+  $scope.opponentFinishReadingState = false;
+
 
 
 
@@ -142,6 +145,20 @@ angular.module('battlescript.battle', [])
     $scope.userReadyState  = !$scope.userReadyState;
     $scope.userReadyText = $scope.userReadyState ? 'Ready for battle!' : 'Waiting on you';
     $rootScope.battleSocket.emit('readyChange', $scope.userReadyState);
+
+    $scope.ifBothPlayersReady();
+  };
+
+
+  ////////////////////////////////////////////////////////////
+  // this updates the user's ready state depending on whether
+  // they clicks the button
+  ////////////////////////////////////////////////////////////
+
+  $scope.updateUserFinishReadingState = function() {
+    $scope.userFinishReadingState  = !$scope.userFinishReadingState;
+    $scope.userFinishReadingStateText = $scope.userFinishReadingState ? 'Ready for battle!' : 'Waiting on you';
+    $rootScope.battleSocket.emit('finishReadingChange', $scope.userFinishReadingState);
 
     $scope.ifBothPlayersReady();
   };
