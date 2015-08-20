@@ -18,7 +18,29 @@ angular.module('battlescript.collab', [])
         vm.listOfUsers = listOfUsers;
         $scope.$apply();
       });
+
+      vm.collabSocket.on('editorState', function(changeObj) {
+        vm.editor.replaceRange(changeObj.text, changeObj.from, changeObj.to);
+      });
+
+      vm.editor.on('beforeChange', function(codeMirror, changeObj) {
+        // changeObj.cancel();
+        console.log(changeObj);
+      });
+
+      vm.editor.on('change', function(codeMirror, changeObj) {
+        // vm.editor.getValue()
+        vm.sendEditorState(changeObj);
+      });
     }
   }();
+
+  vm.sendEditorState = function(editorState) {
+    vm.collabSocket.emit('editorState', editorState);
+  };
+
+  vm.sendKeyStroke = function(keystroke) {
+    vm.collabSocket.emit('keystroke', keystroke);
+  };
 
 })

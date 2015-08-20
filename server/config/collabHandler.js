@@ -28,8 +28,13 @@ module.exports = function(socket, io) {
 
     socket.on('disconnect', function(data) {
       removeUserFromRoom();
-      io.sockets.in(room.id).emit('listOfUsers', room.users); // broadcast to ALL OTHER users
+      socket.broadcast.to(room.id).emit('listOfUsers', room.users); // broadcast to ALL OTHER users
     });
 
+    socket.on('editorState', function(changeObj) {
+      if (changeObj.origin == '+input' || changeObj.origin == 'paste' || changeObj.origin == '+delete') {
+        socket.broadcast.to(room.id).emit('editorState', changeObj);
+      }
+    });
   }();
 };
