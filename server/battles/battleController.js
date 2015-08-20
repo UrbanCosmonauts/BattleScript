@@ -25,6 +25,8 @@ module.exports = {
     console.log("REQ BODY: ", req.body);
     Battle.findOne({roomhash: req.body.battleHash}, function(err, battleRoom){
       console.log("BATTLEROOM: ", battleRoom);
+      battleRoom = battleRoom || {};
+      battleRoom.challengeName = battleRoom.challengeName || '5513795bd3fafb56c200049e';
       var options = {
         // url: 'https://www.codewars.com/api/v1/code-challenges/5513795bd3fafb56c200049e/javascript/train',
         url: 'https://www.codewars.com/api/v1/code-challenges/'+ battleRoom.challengeName + '/javascript/train',
@@ -33,6 +35,7 @@ module.exports = {
         }
       };
       request.post(options, function(error, response, body) {
+        console.log(response);
         res.send(response);
       });
     });
@@ -41,7 +44,7 @@ module.exports = {
   attemptBattle: function(req, res) {
     // Init a poll counter, so that if we poll too many times, it times out.
     var pollCounter = 0;
-    
+
     // Poll the api
     var poll = function(dmid) {
       // Poll it with a get request, including the dmid
@@ -52,7 +55,7 @@ module.exports = {
         }
       }, function(error, response, body) {
         // parse the json response
-        body = JSON.parse(body); 
+        body = JSON.parse(body);
 
         if (body && body.success) {
           // if poll body exists, and the poll is successful, we're good to go.
