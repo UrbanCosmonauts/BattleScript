@@ -151,8 +151,6 @@ angular.module('battlescript.battle', [])
     $scope.userFinishReadingState  = !$scope.userFinishReadingState;
     $scope.userFinishReadingStateText = $scope.userFinishReadingState ? 'Ready for battle!' : 'Waiting on you';
     $rootScope.battleSocket.emit('finishReadingChange', $scope.userFinishReadingState);
-
-    $scope.ifBothPlayersReady();
   };
 
 
@@ -174,7 +172,7 @@ angular.module('battlescript.battle', [])
         $scope.userReadyState = true;
         $scope.opponentReadyState = true;
         $scope.userFinishReadingState = true;
-        $scope.opponentFInishReadingState = true;
+        $scope.opponentFinishReadingState = true;
         if (!$scope.$$phase) $scope.$apply();
 
         $rootScope.battleSocket.emit('getOpponent');
