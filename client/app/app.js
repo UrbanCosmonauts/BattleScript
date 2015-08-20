@@ -135,6 +135,15 @@ angular.module('battlescript', [
     templateUrl: 'app/directives/footer.html'
   };
 })
+.directive('battlePrompt', function() {
+  return {
+    restrict: 'A',
+    templateUrl: 'app/directives/battlePrompt.html',
+    scope: {
+      battleDescriptions: '=battleDescription'
+    }
+  }
+})
 
 ////////////////////////////////////////////////////////////
 // run the style
