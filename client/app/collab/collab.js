@@ -1,5 +1,5 @@
 angular.module('battlescript.collab', [])
-.controller('CollabController', function($scope, Auth, Socket, Users, Editor) {
+.controller('CollabController', function($scope, Auth, Socket, Users, Editor, Battle) {
   var vm = this; // vm refers to view-model
 
   vm.battleRoomId = 1;
@@ -13,6 +13,12 @@ angular.module('battlescript.collab', [])
         'handler=collab',
         'roomhash=' + vm.battleRoomId
       ]);
+
+      Battle.getBattle(vm.battleRoomId)
+      .then(function(data) {
+          vm.battle = JSON.parse(data.body);
+          vm.battleDescription = marked(vm.battle.description);
+      });
 
       vm.collabSocket.on('listOfUsers', function(listOfUsers) {
         vm.listOfUsers = listOfUsers;
