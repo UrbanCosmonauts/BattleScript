@@ -101,6 +101,12 @@ module.exports = {
     });
   },
 
+  runTests: function(req, res) {
+    var output = require('./testRunner.js')(req.body.code, req.body.testCode);
+    console.log(output);
+    res.status(201).send(output);
+  },
+
   submitChallenge: function(req, res) {
     // TODO: Needs to be able to submit a challenge and test it
   },

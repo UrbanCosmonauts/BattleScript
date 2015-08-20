@@ -192,13 +192,17 @@ angular.module('battlescript.battle', [])
     $scope.spinnerOn = true;
     if (!$scope.$$phase) $scope.$apply();
 
-    // set up both editors
+    // set up user editors
     $scope.userEditor = Editor.makeEditor('#editor--user', false);
+    // set up user test editor
+    $scope.testEditor = Editor.makeEditor('#editor--test', false);
+    // set up opponent editor
     $scope.opponentEditor = Editor.makeEditor('#editor--opponent', true);
     $scope.handleEditorEvents();
 
     // set up various fields
     $scope.userButtonAttempt = 'Attempt Solution';
+    $scope.userButtonTest = 'Run Tests';
     $scope.userNotes = 'Nothing to show yet...';
 
     // get the battle
@@ -322,7 +326,7 @@ angular.module('battlescript.battle', [])
     Battle.attemptBattle($scope.battleProjectId, $scope.battleSolutionId, $scope.userEditor.getValue())
       .then(function(data) {
         $scope.userButtonAttempt = 'Attempt Solution';
-        $scope.userNotes = data.reason;
+        $scope.userNotesBattle = data.reason;
 
         // TODO: polling is successful at this point in time, time to send
         // and recieve the correct data
@@ -330,10 +334,31 @@ angular.module('battlescript.battle', [])
         if (data['passed'] === true) {
           Users.statChange($scope.user, 1); // # of times to increase the wins. Should be 1 always
           $rootScope.battleSocket.emit('winnerFound');
-          $scope.userNotes = "All tests passing!";
+          $scope.userNotesBattle = "All tests passing!";
           alert('You have the answer. Good job!');
           $location.path('/dashboard'); //redirect back. winner found
         }
+      });
+  };
+
+  ////////////////////////////////////////////////////////////
+  // handle test attempts
+  ////////////////////////////////////////////////////////////
+
+
+  $scope.runTests = function($event) {
+    $event.preventDefault();
+
+    $scope.userButtonTest = 'Testing...';
+
+    Battle.runTests($scope.userEditor.getValue(), $scope.testEditor.getValue())
+      .then(function(data) {
+        $scope.userButtonTest = 'Run Tests';
+        console.log(data.testResults.join('\n'));
+        $scope.userNotesTest = data.testResults.join('\n');
+        $scope.userNotesConsole = data.codelog;
+        
+        
       });
   };
 
