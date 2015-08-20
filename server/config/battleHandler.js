@@ -72,6 +72,11 @@ module.exports = function(socket, io){
       socket.broadcast.to(joinedRoom.id).emit('readyChange', data);
     });
 
+    socket.on('finishReadingChange', function(data) {
+      console.log('finishReadingChange:', data);
+      socket.broadcast.to(joinedRoom.id).emit('finishReadingChange', data);
+    });
+
     socket.on('getOpponent', function(data){
       socket.broadcast.to(joinedRoom.id).emit('nameReq');
     });
