@@ -23,10 +23,14 @@
         </div><!-- /battlefield header -->
 
         <div class="grid grid--l">
-
+          <div class="grid__item grid__item--33-l">
           <div battle-prompt battle-description="battleDescription"></div>
-
-          <div class="grid__item grid__item--66-l">
+            <div ng-show=" !userFinishReadingState || !opponentFinishReadingState">
+                <button ng-class="{'active': userFinishReadingState}" class="btn btn--primary btn--medium btn--readstate btn--block" ng-click="updateUserFinishReadingState()">{{ userReadyText }}</button>
+                <button ng-class="{'active': opponentFinishReadingState}" class="btn btn--primary btn--medium btn--readstate btn--block">{{ opponentReadyText }}</button>
+            </div>
+          </div><!-- grid item -->
+          <div ng-show="userFinishReadingState && opponentFinishReadingState" class="grid__item grid__item--66-l">
 
             <div class="battle-player battle-player--user">
               <h3 class="battle-player__heading">Your solution:</h3>

@@ -1041,6 +1041,10 @@ button:focus {
   outline: none;
 }
 
+.btn--readstate {
+  margin-bottom: 5px;
+}
+
 @media all and (min-width: 840px) {
   .btn--medium {
     padding: 12px 36px;
