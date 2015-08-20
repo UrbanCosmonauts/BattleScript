@@ -60,11 +60,23 @@
             <div class="grid grid--l">
               <div class="grid__item grid__item--66-l">
                 <div class="battle-notices">
-                  <h3 class="battle-notices__heading">Notifications:</h3>
+                  <h3 class="battle-notices__heading">Submission Notifications:</h3>
                   <div class="battle-notices__notes">
-                    {{ userNotes }}
+                    {{ userNotesBattle }}
                   </div>
                 </div><!-- /battle-notices -->
+                <div class="battle-notices">
+                  <h3 class="battle-notices__heading">Console Notifications:</h3>
+                  <div class="battle-notices__notes">
+                    {{ userNotesConsole }}
+                  </div>
+                </div><!-- /console-notices -->
+                <div class="battle-notices">
+                  <h3 class="battle-notices__heading">Test Notifications:</h3>
+                  <div class="battle-notices__notes">
+                    {{ userNotesTest }}
+                  </div>
+                </div><!-- /test-notices -->
               </div><!-- /grid__item -->
               <div class="grid__item grid__item--33-l">
                 <div class="battle-player battle-player--opponent">

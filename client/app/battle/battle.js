@@ -326,7 +326,7 @@ angular.module('battlescript.battle', [])
     Battle.attemptBattle($scope.battleProjectId, $scope.battleSolutionId, $scope.userEditor.getValue())
       .then(function(data) {
         $scope.userButtonAttempt = 'Attempt Solution';
-        $scope.userNotes = data.reason;
+        $scope.userNotesBattle = data.reason;
 
         // TODO: polling is successful at this point in time, time to send
         // and recieve the correct data
@@ -334,7 +334,7 @@ angular.module('battlescript.battle', [])
         if (data['passed'] === true) {
           Users.statChange($scope.user, 1); // # of times to increase the wins. Should be 1 always
           $rootScope.battleSocket.emit('winnerFound');
-          $scope.userNotes = "All tests passing!";
+          $scope.userNotesBattle = "All tests passing!";
           alert('You have the answer. Good job!');
           $location.path('/dashboard'); //redirect back. winner found
         }
@@ -354,18 +354,11 @@ angular.module('battlescript.battle', [])
     Battle.runTests($scope.userEditor.getValue(), $scope.testEditor.getValue())
       .then(function(data) {
         $scope.userButtonTest = 'Run Tests';
-        $scope.userNotes = data.reason;
-
-        // TODO: polling is successful at this point in time, time to send
-        // and recieve the correct data
-        console.log(data);
-        if (data['passed'] === true) {
-          Users.statChange($scope.user, 1); // # of times to increase the wins. Should be 1 always
-          $rootScope.battleSocket.emit('winnerFound');
-          $scope.userNotes = "All tests passing!";
-          alert('You have the answer. Good job!');
-          $location.path('/dashboard'); //redirect back. winner found
-        }
+        console.log(data.testResults.join('\n'));
+        $scope.userNotesTest = data.testResults.join('\n');
+        $scope.userNotesConsole = data.codelog;
+        
+        
       });
   };
 
