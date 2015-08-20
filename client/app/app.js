@@ -9,6 +9,7 @@ angular.module('battlescript', [
   'battlescript.dashboard',
   'battlescript.battle',
   'battlescript.collab',
+  'battlescript.directives.battlePrompt',
   'ui.router',
   'ngSanitize'
 ])
@@ -134,15 +135,6 @@ angular.module('battlescript', [
     restrict: 'E',
     templateUrl: 'app/directives/footer.html'
   };
-})
-.directive('battlePrompt', function() {
-  return {
-    restrict: 'A',
-    templateUrl: 'app/directives/battlePrompt.html',
-    scope: {
-      battleDescriptions: '=battleDescription'
-    }
-  }
 })
 
 ////////////////////////////////////////////////////////////
