@@ -23,13 +23,7 @@ angular.module('battlescript.collab', [])
         vm.editor.replaceRange(changeObj.text, changeObj.from, changeObj.to);
       });
 
-      vm.editor.on('beforeChange', function(codeMirror, changeObj) {
-        // changeObj.cancel();
-        console.log(changeObj);
-      });
-
       vm.editor.on('change', function(codeMirror, changeObj) {
-        // vm.editor.getValue()
         vm.sendEditorState(changeObj);
       });
     }

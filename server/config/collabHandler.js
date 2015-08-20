@@ -10,7 +10,6 @@ module.exports = function(socket, io) {
   };
 
   var removeUserFromRoom = function() {
-    console.log(username, ' DISCONECTED FROM COLLAB ROOM: ', room.id);
     room.members--;
     room.users.splice(room.users.indexOf(username), 1);
     if (room.members === 0) {
