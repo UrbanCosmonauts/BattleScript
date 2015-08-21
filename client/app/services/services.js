@@ -2,9 +2,9 @@ angular.module('battlescript.services', [])
 
 ////////////////////////////////////////////////////////////
 // Auth factory
-// 
+//
 // This takes care of all things auth related:
-// 
+//
 // - user sign in
 // - user sign up
 // - user is authenticated
@@ -12,7 +12,7 @@ angular.module('battlescript.services', [])
 ////////////////////////////////////////////////////////////
 
 .factory('Auth', function ($http, $location, $window) {
-  
+
   // signs users in
   var signin = function (user) {
     return $http({
@@ -54,7 +54,7 @@ angular.module('battlescript.services', [])
 
     console.log('this is user!!!', user)
     console.log('inside signout factory')
-    
+
     return $http({
       method: 'POST',
       url: '/api/users/signout',
@@ -77,9 +77,9 @@ angular.module('battlescript.services', [])
 
 ////////////////////////////////////////////////////////////
 // Users factory
-// 
+//
 // Handles all things to do with users:
-// 
+//
 // - fetching the currently logged in user
 // - fetching online users
 // - fetching all users
@@ -128,7 +128,7 @@ angular.module('battlescript.services', [])
 
 ////////////////////////////////////////////////////////////
 // Sockets factory
-// 
+//
 // A set of reusable functions to handle socket connections
 // inside various controllers
 ////////////////////////////////////////////////////////////
@@ -140,7 +140,7 @@ angular.module('battlescript.services', [])
   // key pair value in string format
   var createSocket = function(route, params) {
     var query = params.join('&');
-    return io.connect('http://localhost:8000/#/' + route, {
+    return io.connect('floating-brook-8924.herokuapp.com/#/' + route, {
       query: query,
       'force new connection': true
     });
@@ -153,7 +153,7 @@ angular.module('battlescript.services', [])
 
 ////////////////////////////////////////////////////////////
 // Notifications factory
-// 
+//
 // A set of reusable functions to handle user notifications
 // throughout the app
 ////////////////////////////////////////////////////////////
@@ -164,9 +164,9 @@ angular.module('battlescript.services', [])
 
 ////////////////////////////////////////////////////////////
 // Dashboard factory
-// 
+//
 // Handles all things on the user dashboard. Might be
-// factored out depending on the state of the Users 
+// factored out depending on the state of the Users
 // factory
 ////////////////////////////////////////////////////////////
 
@@ -176,13 +176,13 @@ angular.module('battlescript.services', [])
 
 ////////////////////////////////////////////////////////////
 // Battle factory
-// 
+//
 // Handles all things to do when users engage in a battle
 // against each other:
-// 
+//
 // - get battle, gets a battle from the api
 // - attempt battle, for when users attempt a solution
-// - submit battle, for when a user wants to submit a 
+// - submit battle, for when a user wants to submit a
 //   final solution for a battle
 ////////////////////////////////////////////////////////////
 
@@ -203,7 +203,7 @@ angular.module('battlescript.services', [])
   var getBattle = function(battleHash) {
     return $http({
       method: 'POST',
-      url: '/api/duels/getduel',
+      url: '/api/battles/getbattle',
       data: {battleHash: battleHash}
     }).then(function(res) {
       return res.data;
@@ -214,7 +214,7 @@ angular.module('battlescript.services', [])
   var attemptBattle = function(projectId, solutionId, code) {
     return $http({
       method: 'POST',
-      url: '/api/duels/attemptduel',
+      url: '/api/battles/attemptbattle',
       data: {
         code: code,
         projectId: projectId,
@@ -225,16 +225,32 @@ angular.module('battlescript.services', [])
     });
   };
 
+  var runTests = function(code, testCode) {
+    return $http({
+      method: 'POST',
+      url: '/api/battles/runtests',
+      data: {
+        code: code,
+        testCode: testCode || null
+      }
+    }).then(function(res) {
+      console.log(res.data);
+      return res.data;
+    });
+  };
+
   return {
     isValidBattleRoom: isValidBattleRoom,
     getBattle: getBattle,
-    attemptBattle: attemptBattle
-  }
+    attemptBattle: attemptBattle,
+    runTests: runTests
+  };
+
 })
 
 ////////////////////////////////////////////////////////////
 // Editor factory
-// 
+//
 // Handles all things to do with setting up CodeMirror
 // editors
 ////////////////////////////////////////////////////////////

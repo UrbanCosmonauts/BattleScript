@@ -1,19 +1,20 @@
-// load .env as soon as possible
-require('dotenv').load();
-
 // boot up express express and mongoose
 var express = require('express');
 var mongoose = require('mongoose');
 var app = express();
 var server = require('http').Server(app);
+var env = process.env.NODE_ENV;
 
-mongoose.connect('mongodb://localhost/battlescript');
+if (env === 'development') {
+  require('dotenv').load();
+}
+
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/meals-development');
 
 // configure our server with all the middleware and and routing
 require('./config/middleware.js')(app, express);
 
-// listen on port 8000
-server.listen(8000);
+server.listen(process.env.PORT || 3000);
 
 ////////////////////////////////////////////////////////////
 // init socket stuff
@@ -26,18 +27,20 @@ io.on('connection', function(socket) {
   var handler = socket.handshake.query.handler;
   if (handler === 'dashboard') dashboardHandler(socket, io);
   if (handler === 'battle') battleHandler(socket, io);
+  if (handler === 'collab') collabHandler(socket, io);
 });
 
-// set up two handlers for separate sockets
+// set up handlers for separate sockets
 var battleHandler = require('./config/battleHandler.js');
 var dashboardHandler = require('./config/dashboardHandler.js');
+var collabHandler = require('./config/collabHandler.js');
 
 
 // For handling various sockets, goto socket battleHandler in config js
 // io.on('connection', function(socket){
 //   var handler = socket.handshake.query.handler;
 //   if (handler === 'battle') battleHandler(socket, io);
-//   
+//
 // });
 
 // export our app for testing and flexibility, required by index.js
